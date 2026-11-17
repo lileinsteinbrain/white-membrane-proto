@@ -15,13 +15,13 @@ public class GestureManager : MonoBehaviour
 
     void Update()
     {
-        // 鼠标 (编辑器里点 Game 视图)
+        // Mouse (click the Game view in the editor)
         if (Input.GetMouseButtonDown(0))
         {
             HandleTap();
         }
 
-        // 触摸 (真机以后)
+        // Touch (for on-device use)
         if (Input.touchCount > 0)
         {
             var t = Input.GetTouch(0);
@@ -36,13 +36,13 @@ public class GestureManager : MonoBehaviour
 
         if (now - lastTapTime < DoubleTapWindow)
         {
-            // double tap -> 回 Idle
+            // double tap -> back to Idle
             stateManager?.SetState(AppState.Idle);
             lastTapTime = 0f;
         }
         else
         {
-            // single tap -> 尝试切下一个
+            // single tap -> advance to the next state
             lastTapTime = now;
             Invoke(nameof(SingleTapIfNoDouble), DoubleTapWindow + 0.02f);
         }
@@ -50,7 +50,7 @@ public class GestureManager : MonoBehaviour
 
     private void SingleTapIfNoDouble()
     {
-        if (lastTapTime == 0f) return; // 说明已经被双击处理
+        if (lastTapTime == 0f) return; // already handled as a double tap
         lastTapTime = 0f;
 
         if (stateManager == null) return;

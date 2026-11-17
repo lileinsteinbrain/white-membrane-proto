@@ -4,7 +4,7 @@ public class FaceMaterialController : MonoBehaviour
 {
     [Header("Refs")]
     [SerializeField] private StateManager stateManager;
-    [SerializeField] private Renderer faceMesh;  // 我们现在只需要一个普通 Renderer，比如小球
+    [SerializeField] private Renderer faceMesh;  // any plain Renderer works for now, e.g. a sphere
 
     [Header("Materials (Idle, Face1, Face2, Abstract)")]
     [SerializeField] private Material idleMat;
@@ -14,10 +14,10 @@ public class FaceMaterialController : MonoBehaviour
 
     void Awake()
     {
-        // 自动找 StateManager（防止忘拖）
+        // Find StateManager automatically (in case it was not assigned)
         if (stateManager == null) stateManager = FindObjectOfType<StateManager>();
 
-        // 自动找 faceMesh：优先用你手动拖的；否则在我自己身上找 Renderer
+        // Find faceMesh automatically: prefer the assigned one, otherwise use the Renderer on this object
         if (faceMesh == null) faceMesh = GetComponent<Renderer>();
     }
 
@@ -26,7 +26,7 @@ public class FaceMaterialController : MonoBehaviour
         if (stateManager != null)
         {
             stateManager.OnStateChanged += HandleState;
-            HandleState(stateManager.CurrentState); // 初始化一次
+            HandleState(stateManager.CurrentState); // initialise once
         }
     }
 
@@ -62,7 +62,7 @@ public class FaceMaterialController : MonoBehaviour
     void ApplyMat(Material m)
     {
         if (m == null) return;
-        // sharedMaterial = 改的是“外观”，不会实例化一份clone，适合我们现在这种demo用
+        // sharedMaterial changes the appearance without instantiating a clone; fine for this demo
         faceMesh.sharedMaterial = m;
     }
 }

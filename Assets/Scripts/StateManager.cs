@@ -5,19 +5,19 @@ public enum AppState { Idle, Face1, Face2, Abstract }
 
 public class StateManager : MonoBehaviour
 {
-    // 全局单例
+    // Global singleton
     public static StateManager I { get; private set; }
 
-    // 当前状态
+    // Current state
     public AppState CurrentState { get; private set; } = AppState.Idle;
 
-    // 状态变更事件（HUD / 材质控制脚本会订阅）
+    // State change event (subscribed to by the HUD and material controller)
     public event Action<AppState> OnStateChanged;
 
     void Awake()
     {
         I = this;
-        DontDestroyOnLoad(gameObject); // 可选：跨场景保留
+        DontDestroyOnLoad(gameObject); // optional: persist across scenes
     }
 
     public void SetState(AppState s)
